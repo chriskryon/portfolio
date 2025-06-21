@@ -117,25 +117,33 @@ function ProjectCard({ project, variant = 'regular' }: ProjectCardProps) {
           {/* Right: Visual */}
           <div className="relative">
             <div className="w-full h-80 glass rounded-2xl relative overflow-hidden group-hover:scale-105 transition-transform duration-500 flex items-center justify-center">
-              <div className="text-8xl opacity-20">
-                {getCategoryIcon(category)}
-              </div>
+              {project.imageUrl ? (
+                <img 
+                  src={project.imageUrl} 
+                  alt={title}
+                  className="w-full h-full object-cover rounded-2xl"
+                />
+              ) : (
+                <div className="text-8xl opacity-20">
+                  {getCategoryIcon(category)}
+                </div>
+              )}
               
               <div className="absolute top-4 right-4 flex gap-2">
                 {liveUrl && (
-                  <div className="w-10 h-10 glass rounded-full flex items-center justify-center opacity-60">
-                    <span className="text-white/80">🔗</span>
+                  <div className="w-10 h-10 bg-gray-900/80 border-2 border-white/80 rounded-full flex items-center justify-center backdrop-blur-md shadow-lg">
+                    <span className="text-white text-lg">🔗</span>
                   </div>
                 )}
                 {githubUrl && (
-                  <div className="w-10 h-10 glass rounded-full flex items-center justify-center opacity-60">
-                    <span className="text-white/80">↗</span>
+                  <div className="w-10 h-10 bg-gray-900/80 border-2 border-white/80 rounded-full flex items-center justify-center backdrop-blur-md shadow-lg">
+                    <span className="text-white text-lg">↗</span>
                   </div>
                 )}
               </div>
 
               {githubUrl && (
-                <div className="absolute bottom-4 left-4 flex items-center gap-2 text-sm text-neutral-400">
+                <div className="absolute bottom-4 left-4 flex items-center gap-2 text-sm text-white bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm">
                   <span>GitHub</span>
                   <span>•</span>
                   <span>Open Source</span>
@@ -153,9 +161,17 @@ function ProjectCard({ project, variant = 'regular' }: ProjectCardProps) {
     <div className="group glass-subtle rounded-2xl p-6 hover:glass transition-all duration-500 hover:scale-102">
       {/* Header */}
       <div className="w-full h-32 glass rounded-xl mb-6 relative overflow-hidden group-hover:scale-105 transition-transform duration-500 flex items-center justify-center">
-        <div className="text-4xl opacity-20">
-          {getCategoryIcon(category)}
-        </div>
+        {project.imageUrl ? (
+          <img 
+            src={project.imageUrl} 
+            alt={title}
+            className="w-full h-full object-cover rounded-xl"
+          />
+        ) : (
+          <div className="text-4xl opacity-20">
+            {getCategoryIcon(category)}
+          </div>
+        )}
         
         <div className={`absolute top-2 left-2 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(status)}`}>
           {getStatusText(status)}
@@ -167,9 +183,9 @@ function ProjectCard({ project, variant = 'regular' }: ProjectCardProps) {
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-8 h-8 glass rounded-full flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity duration-300"
+              className="w-8 h-8 bg-gray-900/90 border border-white/90 rounded-full flex items-center justify-center backdrop-blur-md shadow-lg hover:bg-gray-800 transition-all duration-300"
             >
-              <span className="text-white/80 text-sm">🔗</span>
+              <span className="text-white text-sm">🔗</span>
             </a>
           )}
           {githubUrl && (
@@ -177,9 +193,9 @@ function ProjectCard({ project, variant = 'regular' }: ProjectCardProps) {
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-8 h-8 glass rounded-full flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity duration-300"
+              className="w-8 h-8 bg-gray-900/90 border border-white/90 rounded-full flex items-center justify-center backdrop-blur-md shadow-lg hover:bg-gray-800 transition-all duration-300"
             >
-              <span className="text-white/80 text-sm">↗</span>
+              <span className="text-white text-sm">↗</span>
             </a>
           )}
         </div>
