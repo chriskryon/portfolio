@@ -20,42 +20,42 @@ export default function HeroSection() {
             />
           </div>
           <div className="absolute inset-0 mx-auto w-40 h-40 rounded-full bg-gradient-to-r from-blue-400/20 via-purple-500/20 to-pink-500/20 blur-3xl animate-pulse-slow" />
-          
-          {/* Status indicator */}
-          <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
-            <div className="flex items-center gap-2 bg-green-500/20 backdrop-blur-sm border border-green-400/30 rounded-full px-3 py-1">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-green-300 text-xs font-medium">Disponível para projetos</span>
-            </div>
-          </div>
         </div>
 
         {/* Title */}
-        <div className="mb-10 animate-slide-up">
+        <div className="mb-8 animate-slide-up">
           <div className="mb-3">
-            <span className="inline-block px-3 py-1 bg-blue-500/10 border border-blue-400/20 rounded-full text-blue-300 text-xs font-medium mb-4">
+            <span className="inline-block px-3 py-1 bg-blue-500/10 border border-blue-400/20 rounded-full text-blue-300 text-sm font-medium">
               👋 Olá, eu sou
             </span>
           </div>
           
-          <h1 className="text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight">
+          <h1 className="text-5xl lg:text-6xl font-bold tracking-tight mb-3 leading-tight">
             <span className="text-gradient hover:scale-105 transition-transform duration-300 inline-block">
               Christopher
             </span>
           </h1>
+
+          {/* Status indicator */}
+          <div className="flex justify-center mb-4">
+            <div className="flex items-center gap-2 bg-green-500/20 backdrop-blur-sm border border-green-400/30 rounded-full px-3 py-1">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <span className="text-green-300 text-sm font-medium">Disponível para projetos</span>
+            </div>
+          </div>
           
-          <div className="space-y-3">
-            <p className="text-2xl lg:text-3xl text-white font-light leading-relaxed max-w-4xl mx-auto">
+          <div className="space-y-2">
+            <p className="text-xl lg:text-2xl text-white font-light leading-relaxed max-w-3xl mx-auto">
               Rumo ao <span className="text-gradient-primary font-medium">Full-Stack</span>
             </p>
-            <p className="text-lg text-neutral-400 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base text-neutral-400 max-w-2xl mx-auto leading-relaxed">
               Aprendendo a criar experiências digitais modernas e eficientes
             </p>
           </div>
         </div>
 
         {/* Tech badges */}
-        <div className="mb-10 animate-slide-up">
+        <div className="mb-6 animate-slide-up">
           <div className="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
             {['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Git', 'Docker'].map((tech) => (
               <span 
@@ -69,8 +69,8 @@ export default function HeroSection() {
         </div>
 
         {/* Description */}
-        <div className="mb-12 animate-slide-up">
-          <p className="text-base text-neutral-400 max-w-3xl mx-auto leading-relaxed">
+        <div className="mb-8 animate-slide-up">
+          <p className="text-sm text-neutral-400 max-w-2xl mx-auto leading-relaxed">
             Estudante apaixonado por transformar ideias em código, focado em aprender e criar soluções web que combinam 
             <span className="text-white font-medium"> performance</span>, 
             <span className="text-white font-medium"> qualidade</span> e 
