@@ -106,7 +106,7 @@ export default function ProjectsSection() {
   ];
 
   return (
-    <section className="py-32">
+    <section id="projects" className="py-32">
       <div className="container-custom">
         <div className="text-center mb-20">
           <h2 className="text-6xl font-bold mb-8">

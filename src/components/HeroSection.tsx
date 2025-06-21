@@ -1,42 +1,89 @@
 export default function HeroSection() {
+  const scrollToProjects = () => {
+    document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const scrollToContact = () => {
+    document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <section className="min-h-screen flex items-center justify-center py-32">
+    <section className="h-screen flex items-center justify-center relative">
       <div className="container-custom text-center">
         {/* Avatar */}
-        <div className="relative mb-16 animate-fade-in">
-          <div className="mx-auto w-40 h-40 rounded-full overflow-hidden shadow-2xl animate-float border-4 border-white/10">
+        <div className="relative mb-12 animate-fade-in">
+          <div className="mx-auto w-40 h-40 rounded-full overflow-hidden shadow-2xl animate-float border-4 border-white/10 relative z-10">
             <img 
               src="https://i.imgur.com/bsklhdq.jpeg" 
               alt="Christopher - Desenvolvedor Full-Stack" 
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
             />
           </div>
-          <div className="absolute inset-0 mx-auto w-40 h-40 rounded-full bg-linear-135/oklch from-primary-400/20 to-primary-600/20 blur-2xl animate-pulse-slow" />
+          <div className="absolute inset-0 mx-auto w-40 h-40 rounded-full bg-gradient-to-r from-blue-400/20 via-purple-500/20 to-pink-500/20 blur-3xl animate-pulse-slow" />
+          
+          {/* Status indicator */}
+          <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
+            <div className="flex items-center gap-2 bg-green-500/20 backdrop-blur-sm border border-green-400/30 rounded-full px-3 py-1">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <span className="text-green-300 text-xs font-medium">Disponível para projetos</span>
+            </div>
+          </div>
         </div>
 
         {/* Title */}
-        <div className="mb-12 animate-slide-up">
-          <h1 className="text-8xl lg:text-7xl font-bold tracking-tight mb-6">
-            <span className="text-gradient">Christopher</span>
+        <div className="mb-10 animate-slide-up">
+          <div className="mb-3">
+            <span className="inline-block px-3 py-1 bg-blue-500/10 border border-blue-400/20 rounded-full text-blue-300 text-xs font-medium mb-4">
+              👋 Olá, eu sou
+            </span>
+          </div>
+          
+          <h1 className="text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight">
+            <span className="text-gradient hover:scale-105 transition-transform duration-300 inline-block">
+              Christopher
+            </span>
           </h1>
-          <p className="text-2xl lg:text-3xl text-neutral-300 font-light leading-relaxed max-w-3xl mx-auto">
-            Rumo ao Desenvolvimento Full-Stack
-          </p>
+          
+          <div className="space-y-3">
+            <p className="text-2xl lg:text-3xl text-white font-light leading-relaxed max-w-4xl mx-auto">
+              Rumo ao <span className="text-gradient-primary font-medium">Full-Stack</span>
+            </p>
+            <p className="text-lg text-neutral-400 max-w-2xl mx-auto leading-relaxed">
+              Aprendendo a criar experiências digitais modernas e eficientes
+            </p>
+          </div>
+        </div>
+
+        {/* Tech badges */}
+        <div className="mb-10 animate-slide-up">
+          <div className="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
+            {['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Git', 'Docker'].map((tech) => (
+              <span 
+                key={tech}
+                className="px-3 py-1 glass-subtle rounded-full text-neutral-300 text-xs font-medium hover:glass transition-all duration-300 hover:scale-105"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
         </div>
 
         {/* Description */}
-        <div className="mb-16 animate-slide-up">
-          <p className="text-lg text-neutral-400 max-w-2xl mx-auto leading-relaxed">
-            Construindo aplicações web modernas e eficientes através da combinação de tecnologias 
-            front-end e back-end, com foco em qualidade, performance e experiência do usuário.
+        <div className="mb-12 animate-slide-up">
+          <p className="text-base text-neutral-400 max-w-3xl mx-auto leading-relaxed">
+            Estudante apaixonado por transformar ideias em código, focado em aprender e criar soluções web que combinam 
+            <span className="text-white font-medium"> performance</span>, 
+            <span className="text-white font-medium"> qualidade</span> e 
+            <span className="text-white font-medium"> boas práticas</span> de desenvolvimento.
           </p>
         </div>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row justify-center gap-6 animate-slide-up">
+        <div className="flex flex-col sm:flex-row justify-center gap-4 animate-slide-up mb-8">
           <button 
             type="button" 
-            className="btn-primary px-12 py-4 rounded-2xl text-white text-lg font-medium shadow-2xl hover:scale-105 transition-all duration-300"
+            onClick={scrollToContact}
+            className="group btn-primary px-12 py-4 rounded-2xl text-white text-base font-medium shadow-2xl hover:scale-105 transition-all duration-300"
           >
             <span className="flex items-center justify-center gap-3">
               <span>Vamos Conversar</span>
@@ -46,13 +93,21 @@ export default function HeroSection() {
           
           <button 
             type="button" 
-            className="btn-secondary px-12 py-4 rounded-2xl text-white text-lg font-medium hover:scale-105 transition-all duration-300"
+            onClick={scrollToProjects}
+            className="group btn-secondary px-12 py-4 rounded-2xl text-white text-base font-medium hover:scale-105 transition-all duration-300"
           >
             <span className="flex items-center justify-center gap-3">
               <span>Ver Projetos</span>
               <span className="group-hover:rotate-45 transition-transform duration-300">↗</span>
             </span>
           </button>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="w-5 h-8 border-2 border-white/20 rounded-full flex justify-center">
+            <div className="w-0.5 h-2 bg-white/40 rounded-full mt-1.5 animate-pulse"></div>
+          </div>
         </div>
       </div>
     </section>
