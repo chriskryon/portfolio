@@ -1,72 +1,249 @@
+import { projects, type Project } from '../data/projects';
+
 interface ProjectCardProps {
-  title: string;
-  description: string;
-  technologies: string[];
-  category: string;
-  githubUrl?: string;
-  featured?: boolean;
+  project: Project;
+  variant?: 'featured' | 'regular';
 }
 
-function ProjectCard({ title, description, technologies, category, githubUrl, featured = false }: ProjectCardProps) {
-  return (
-    <div className={`group glass-subtle rounded-3xl p-8 hover:glass transition-all duration-500 hover:scale-102 ${featured ? 'lg:col-span-2 lg:row-span-2' : ''}`}>
-      {/* Project Image Placeholder */}
-      <div className={`w-full ${featured ? 'h-80' : 'h-48'} glass rounded-2xl mb-8 relative overflow-hidden group-hover:scale-105 transition-transform duration-500 flex items-center justify-center`}>
-        <div className="text-6xl opacity-20">
-          {category === 'Backend' && '�'}
-          {category === 'Frontend' && '�'}
-          {category === 'Full-Stack' && '🌐'}
-          {category === 'API' && '�'}
-        </div>
-        <div className="absolute top-4 right-4 w-10 h-10 glass rounded-full flex items-center justify-center opacity-60 group-hover:opacity-100 transition-opacity duration-300">
-          <span className="text-white/80 group-hover:rotate-45 transition-transform duration-300">↗</span>
-        </div>
-        {githubUrl && (
-          <div className="absolute bottom-4 left-4 flex items-center gap-2 text-sm text-neutral-400">
-            <span>GitHub</span>
-            <span>•</span>
-            <span>Open Source</span>
+function ProjectCard({ project, variant = 'regular' }: ProjectCardProps) {
+  const { title, description, technologies, category, githubUrl, liveUrl, status, highlights } = project;
+  const isFeatured = variant === 'featured';
+  
+  const getCategoryIcon = (category: string) => {
+    const icons = {
+      'Backend': '🚀',
+      'Frontend': '💻',
+      'Full-Stack': '🌐',
+      'API': '🔧',
+      'Mobile': '📱'
+    };
+    return icons[category as keyof typeof icons] || '💡';
+  };
+
+  const getStatusColor = (status: string) => {
+    const colors = {
+      'completed': 'bg-green-500/20 border-green-400/30 text-green-300',
+      'in-progress': 'bg-yellow-500/20 border-yellow-400/30 text-yellow-300',
+      'planned': 'bg-blue-500/20 border-blue-400/30 text-blue-300'
+    };
+    return colors[status as keyof typeof colors] || colors.completed;
+  };
+
+  const getStatusText = (status: string) => {
+    const texts = {
+      'completed': 'Concluído',
+      'in-progress': 'Em Desenvolvimento',
+      'planned': 'Planejado'
+    };
+    return texts[status as keyof typeof texts] || 'Concluído';
+  };
+
+  if (isFeatured) {
+    return (
+      <div className="group glass-subtle rounded-3xl p-8 hover:glass transition-all duration-500 hover:scale-102">
+        <div className="grid lg:grid-cols-2 gap-8 items-center">
+          {/* Left: Content */}
+          <div className="space-y-6">
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <span className="px-3 py-1 glass-subtle rounded-full text-neutral-400 text-sm font-medium">
+                  {category}
+                </span>
+                <div className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(status)}`}>
+                  {getStatusText(status)}
+                </div>
+              </div>
+              
+              <h3 className="text-3xl lg:text-4xl font-bold text-white group-hover:text-gradient transition-all duration-300">
+                {title}
+              </h3>
+            </div>
+            
+            <p className="text-neutral-400 leading-relaxed text-lg">
+              {description}
+            </p>
+
+            {highlights && (
+              <div className="space-y-3">
+                <h4 className="text-lg font-semibold text-white">Principais recursos:</h4>
+                <ul className="space-y-2">
+                  {highlights.slice(0, 4).map((highlight, index) => (
+                    <li key={index} className="flex items-start gap-2 text-sm text-neutral-400">
+                      <span className="text-primary-400 mt-1">•</span>
+                      <span>{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            
+            <div className="flex flex-wrap gap-2 pt-2">
+              {technologies.slice(0, 6).map((tech) => (
+                <span 
+                  key={tech}
+                  className="px-3 py-1 glass-subtle rounded-full text-neutral-300 text-xs font-medium hover:glass transition-all duration-300"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-4 pt-4">
+              {githubUrl && (
+                <a 
+                  href={githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-primary-400 hover:text-primary-300 transition-colors duration-300 font-medium"
+                >
+                  <span>Ver Código</span>
+                  <span>→</span>
+                </a>
+              )}
+              {liveUrl && (
+                <a 
+                  href={liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-green-400 hover:text-green-300 transition-colors duration-300 font-medium"
+                >
+                  <span>Ver Demo</span>
+                  <span>↗</span>
+                </a>
+              )}
+            </div>
           </div>
-        )}
+
+          {/* Right: Visual */}
+          <div className="relative">
+            <div className="w-full h-80 glass rounded-2xl relative overflow-hidden group-hover:scale-105 transition-transform duration-500 flex items-center justify-center">
+              <div className="text-8xl opacity-20">
+                {getCategoryIcon(category)}
+              </div>
+              
+              <div className="absolute top-4 right-4 flex gap-2">
+                {liveUrl && (
+                  <div className="w-10 h-10 glass rounded-full flex items-center justify-center opacity-60">
+                    <span className="text-white/80">🔗</span>
+                  </div>
+                )}
+                {githubUrl && (
+                  <div className="w-10 h-10 glass rounded-full flex items-center justify-center opacity-60">
+                    <span className="text-white/80">↗</span>
+                  </div>
+                )}
+              </div>
+
+              {githubUrl && (
+                <div className="absolute bottom-4 left-4 flex items-center gap-2 text-sm text-neutral-400">
+                  <span>GitHub</span>
+                  <span>•</span>
+                  <span>Open Source</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Regular card - compact version
+  return (
+    <div className="group glass-subtle rounded-2xl p-6 hover:glass transition-all duration-500 hover:scale-102">
+      {/* Header */}
+      <div className="w-full h-32 glass rounded-xl mb-6 relative overflow-hidden group-hover:scale-105 transition-transform duration-500 flex items-center justify-center">
+        <div className="text-4xl opacity-20">
+          {getCategoryIcon(category)}
+        </div>
+        
+        <div className={`absolute top-2 left-2 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(status)}`}>
+          {getStatusText(status)}
+        </div>
+
+        <div className="absolute top-2 right-2 flex gap-1">
+          {liveUrl && (
+            <a
+              href={liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 glass rounded-full flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity duration-300"
+            >
+              <span className="text-white/80 text-sm">🔗</span>
+            </a>
+          )}
+          {githubUrl && (
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 glass rounded-full flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity duration-300"
+            >
+              <span className="text-white/80 text-sm">↗</span>
+            </a>
+          )}
+        </div>
       </div>
 
-      <div className="space-y-6">
-        <div className="flex items-center gap-3">
-          <span className="px-3 py-1 glass-subtle rounded-full text-neutral-400 text-sm font-medium">
+      <div className="space-y-4">
+        {/* Category and Title */}
+        <div className="space-y-2">
+          <span className="px-2 py-1 glass-subtle rounded-full text-neutral-400 text-xs font-medium">
             {category}
           </span>
+          
+          <h3 className="text-xl font-bold text-white group-hover:text-gradient transition-all duration-300">
+            {title}
+          </h3>
         </div>
         
-        <h3 className={`${featured ? 'text-4xl' : 'text-2xl'} font-bold text-white group-hover:text-gradient transition-all duration-300`}>
-          {title}
-        </h3>
-        
-        <p className="text-neutral-400 leading-relaxed">
-          {description}
+        {/* Description */}
+        <p className="text-neutral-400 leading-relaxed text-sm">
+          {description.length > 120 ? description.substring(0, 120) + '...' : description}
         </p>
         
-        <div className="flex flex-wrap gap-3 pt-4">
-          {technologies.map((tech) => (
+        {/* Technologies */}
+        <div className="flex flex-wrap gap-2">
+          {technologies.slice(0, 4).map((tech) => (
             <span 
               key={tech}
-              className="px-4 py-2 glass-subtle rounded-full text-neutral-300 text-sm font-medium hover:glass transition-all duration-300"
+              className="px-2 py-1 glass-subtle rounded-full text-neutral-300 text-xs font-medium hover:glass transition-all duration-300"
             >
               {tech}
             </span>
           ))}
+          {technologies.length > 4 && (
+            <span className="px-2 py-1 text-neutral-500 text-xs">
+              +{technologies.length - 4}
+            </span>
+          )}
         </div>
 
-        {githubUrl && (
-          <div className="pt-4">
-            <a 
-              href={githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-primary-400 hover:text-primary-300 transition-colors duration-300"
-            >
-              <span>Ver no GitHub</span>
-              <span>→</span>
-            </a>
+        {/* Links */}
+        {(githubUrl || liveUrl) && (
+          <div className="flex items-center gap-3 pt-2">
+            {githubUrl && (
+              <a 
+                href={githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-primary-400 hover:text-primary-300 transition-colors duration-300 text-sm font-medium"
+              >
+                <span>Código</span>
+                <span>→</span>
+              </a>
+            )}
+            {liveUrl && (
+              <a 
+                href={liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-green-400 hover:text-green-300 transition-colors duration-300 text-sm font-medium"
+              >
+                <span>Demo</span>
+                <span>↗</span>
+              </a>
+            )}
           </div>
         )}
       </div>
@@ -75,35 +252,8 @@ function ProjectCard({ title, description, technologies, category, githubUrl, fe
 }
 
 export default function ProjectsSection() {
-  const projects = [
-    {
-      title: 'Sistema de Locadora - Backend',
-      description: 'API completa desenvolvida com Node.js, TypeScript e PostgreSQL. Sistema robusto com autenticação JWT, upload de imagens, validações com Zod e arquitetura em camadas seguindo princípios SOLID e Clean Architecture.',
-      technologies: ['Node.js', 'TypeScript', 'PostgreSQL', 'Prisma', 'Express', 'JWT'],
-      category: 'Backend',
-      githubUrl: 'https://github.com/chriskryon/car-rental-back',
-      featured: true
-    },
-    {
-      title: 'Sistema de Locadora - Frontend',
-      description: 'Interface moderna construída com React, TypeScript e Tailwind CSS. Painel administrativo completo para gerenciamento de frota, com sistema de upload de imagens e interface responsiva.',
-      technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Vite'],
-      category: 'Frontend',
-      githubUrl: 'https://github.com/chriskryon/car-rental-front'
-    },
-    {
-      title: 'API de Gerenciamento',
-      description: 'API RESTful desenvolvida para demonstrar conhecimentos em desenvolvimento backend, com documentação completa e boas práticas de segurança.',
-      technologies: ['Node.js', 'Express', 'PostgreSQL', 'Docker'],
-      category: 'API'
-    },
-    {
-      title: 'Aplicação Web Completa',
-      description: 'Projeto full-stack integrando frontend React com backend Node.js, demonstrando integração completa entre tecnologias modernas.',
-      technologies: ['React', 'Node.js', 'PostgreSQL', 'TypeScript'],
-      category: 'Full-Stack'
-    }
-  ];
+  const featuredProject = projects.find(p => p.featured);
+  const otherProjects = projects.filter(p => !p.featured);
 
   return (
     <section id="projects" className="py-32">
@@ -113,15 +263,48 @@ export default function ProjectsSection() {
             <span className="text-gradient">Projetos</span>
           </h2>
           <p className="text-xl text-neutral-400 max-w-3xl mx-auto leading-relaxed">
-            Seleção de projetos que demonstram minhas habilidades em desenvolvimento full-stack, 
-            desde APIs robustas até interfaces modernas e responsivas
+            Uma seleção dos meus projetos que demonstram a evolução das minhas habilidades em desenvolvimento, 
+            desde APIs backend até interfaces frontend modernas
           </p>
         </div>
         
-        <div className="grid lg:grid-cols-3 gap-8 auto-rows-fr">
-          {projects.map((project) => (
-            <ProjectCard key={project.title} {...project} />
+        {/* Featured Project */}
+        {featuredProject && (
+          <div className="mb-16">
+            <ProjectCard project={featuredProject} variant="featured" />
+          </div>
+        )}
+
+        {/* Other Projects Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+          {otherProjects.map((project) => (
+            <ProjectCard key={project.id} project={project} variant="regular" />
           ))}
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-8">
+          <div className="text-center">
+            <div className="text-4xl font-bold text-gradient mb-3">
+              {projects.length}
+            </div>
+            <div className="text-neutral-300 text-base font-medium">Projetos</div>
+            <div className="text-neutral-500 text-sm">Desenvolvidos</div>
+          </div>
+          <div className="text-center">
+            <div className="text-4xl font-bold text-gradient mb-3">
+              {projects.filter(p => p.status === 'completed').length}
+            </div>
+            <div className="text-neutral-300 text-base font-medium">Finalizados</div>
+            <div className="text-neutral-500 text-sm">Prontos para uso</div>
+          </div>
+          <div className="text-center">
+            <div className="text-4xl font-bold text-gradient mb-3">
+              {projects.filter(p => p.githubUrl).length}
+            </div>
+            <div className="text-neutral-300 text-base font-medium">Open Source</div>
+            <div className="text-neutral-500 text-sm">Código disponível</div>
+          </div>
         </div>
       </div>
     </section>
